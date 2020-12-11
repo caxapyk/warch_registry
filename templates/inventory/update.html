@@ -1,0 +1,23 @@
+{% extends "layout.html" %}
+
+{% block title%}Описи{% endblock %}
+{% set active_page = 'registry-%s' % registry_object.id %}
+
+{% block content %}
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h2 class="h2">Опись №{{ form.number.data }}</h2>
+</div>
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{{ url_for('registry.index') }}">РОГВ</a></li>
+        <li class="breadcrumb-item"><a
+                href="{{ url_for('registry.index', regid=registry_object.id) }}">{{ registry_object.name }}</a></li>
+        <li class="breadcrumb-item active"><a
+                href="{{ url_for('inventory.index', regid=registry_object.id) }}">Описи</a></li>
+        <li class="breadcrumb-item active" aria-current="page">Редактировать</li>
+    </ol>
+</nav>
+
+{% include 'inventory/form.html' %}
+{% endblock %}

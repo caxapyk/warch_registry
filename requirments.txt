@@ -1,0 +1,6 @@
+flask
+flask-httpauth
+flask-sqlalchemy
+sqlalchemy
+mysqlclient
+wtforms

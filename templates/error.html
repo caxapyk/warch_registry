@@ -1,0 +1,20 @@
+{% extends "layout.html" %}
+
+{% block title%}Не удалось выполнить запрос{% endblock %}
+{% set active_page = 'index' %}
+
+{% block content %}
+<div class="jumbotron">
+    <h1 class="display-4">Не удалось выполнить запрос :(</h1>
+    <p class="lead">{{ title }}</p>
+
+    {% if e %}
+    <a data-toggle="collapse" href="#collapseError" role="button" aria-expanded="false" aria-controls="collapseError">Технические подробности</a>
+    <div class="collapse ealert alert-danger mt-3" id="collapseError" role="alert">
+            <pre><code>{{ e }}</code></pre>
+        </div>
+    </div>
+    {% endif %}
+
+
+{% endblock %}

@@ -1,0 +1,33 @@
+<form method="post" autocomplete="off">
+    {{ form.regid() }}
+    <div class="form-row">
+        <div class="col-md-6 mb-2">
+            <label for="fund_number">{{ form.fund_number.label() }}</label>
+            <div class="input-group input-group-sm">
+                {{ form.fund_number() }}
+                <div class="input-group-append">
+
+                </div>
+            </div>
+            <div id="fund_numberValidationFeedback" class="invalid-feedback">
+                {% for error in form.errors['fund_number'] %}
+                {{error}}.<br />
+                {% endfor %}
+            </div>
+        </div>
+        <div class="col-md-6 mb-2">
+            <label for="number ">{{ form.number .label() }}</label>
+            <div class="input-group input-group-sm">
+                {{ form.number () }}
+                <div class="input-group-append">
+
+                </div>
+            </div>
+            <div id="number ValidationFeedback" class="invalid-feedback">
+                {% for error in form.errors['number '] %}
+                {{error}}.<br />
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+</form>

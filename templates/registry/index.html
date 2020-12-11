@@ -1,0 +1,46 @@
+{% extends "layout.html" %}
+
+{% block title%}Реестры{% endblock %}
+
+{% block content %}
+
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h2 class="h2">Реестры</h2>
+    <a href="{{ url_for('registry.create') }}" class="btn btn-success"><span data-feather="plus"></span> Добавить</a>
+</div>
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{{ url_for('registry.index') }}">Главная</a></li>
+        <li class="breadcrumb-item active">Реестры</li>
+    </ol>
+</nav>
+
+{% if objects_list %}
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Наименование</th>
+            <th scope="col" style="width:100px;"></th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for object in objects_list %}
+        <tr>
+            <td>{{ loop.index }}</td>
+            <td>{{ object.name }}</td>
+            <td style="width:100px;">
+                <a href="{{ url_for('registry.update', id=object.id) }}" title="Редактировать"><span
+                        data-feather="edit"></span></a>
+                <a href="{{ url_for('registry.remove', id=object.id) }}" title="Удалить"
+                    onclick="return confirm('Удалить этот элемент?')"><span data-feather="delete"></span></a>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<p>Список пуст</p>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,66 @@
+{% extends "layout.html" %}
+
+{% block title%}{{registry_object.name}}{% endblock %}
+{% set active_page = 'registry-%s' % registry_object.id %}
+
+{% block content %}
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+  <h2 class="h2">{{registry_object.name}}</h2>
+  <div class="btn-group" role="group">
+    <a class="btn btn-success" href="{{ url_for('inventory.create', regid=registry_object.id) }}" aria-label="Добавить опись" title="Добавить опись">
+      <span data-feather="plus"></span>
+    </a>
+    <button id="actionsButton" type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown"
+      aria-haspopup="true" aria-expanded="false">
+      Действия
+    </button>
+    <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+      <a href="#" class="dropdown-item" id="selected-remove" role="button" aria-pressed="true">
+        <span data-feather="trash"></span>
+        Удалить отмеченные
+      </a>
+    </div>
+  </div>
+</div>
+
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="{{ url_for('registry.index') }}">Главная</a></li>
+    <li class="breadcrumb-item"><a href="{{ url_for('registry.index') }}">Реестры</a></li>
+    <li class="breadcrumb-item">{{ registry_object.name }}</li>
+  </ol>
+</nav>
+
+{% if objects_list %}
+<form action="{{ url_for('inventory.remove', registry_id=registry_object.id) }}" id="selected-form" name="selected-form" method="post">
+  <table class="table">
+    <thead class="thead-dark">
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Номер фонда</th>
+        <th scope="col">Номер описи</th>
+        <th scope="col">Название описи</th>
+        <th scope="col">Комментарий</th>
+        <th scope="col" style="width:100px;"></th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for object in objects_list %}
+      <tr>
+        <td><input type="checkbox" name="selected" value="{{ object.id }}" \></td>
+        <td>{{ object.number }}</td>
+        <td style="width:100px;">
+          <a href="{{ url_for('inventory.update', registry_id=registry_object.id, id=object.id ) }}" title="Редактировать"><span
+              data-feather="edit"></span></a>
+          <a href="{{ url_for('inventory.remove', registry_id=registry_object.id, id=object.id) }}" title="Удалить"
+            onclick="return confirm('Удалить этот элемент?')"><span data-feather="delete"></span></a>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</form>
+{% else %}
+<p>Список пуст</p>
+{% endif %}
+{% endblock %}

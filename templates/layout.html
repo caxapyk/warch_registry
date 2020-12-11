@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="Alexander Sakharuk">
+  <title>Реестр описей дел, документов | {% block title %}{% endblock %}</title>
+
+  <!-- Bootstrap core CSS -->
+  <link href="{{ url_for('static', filename='css/bootstrap.min.css') }}" rel="stylesheet">
+  <!-- Custom styles -->
+  <link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet">
+  <!-- JS -->
+  <script src="{{ url_for('static', filename='js/jquery-3.5.1.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/bootstrap.bundle.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/feather.min.js') }}"></script>
+  <script src="{{ url_for('static', filename='js/registry.js') }}"></script>
+</head>
+
+<body>
+  <div class="container">
+    <div class="row">
+      <nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow col-md-12 col-lg-12">
+        <a class="navbar-brand col-md-4 col-lg-3 mr-0 px-3" href="{{ url_for('registry.index') }}"><img
+            src="{{ url_for('static', filename='icon.png') }}" class="logo">РЕЕСТР ОПИСЕЙ</a>
+        <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-toggle="collapse"
+          data-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+        </button>
+      </nav>
+    </div>
+    <div class="row">
+      <nav id="sidebarMenu" class="col-md-4 col-lg-3 d-md-block bg-light sidebar collapse">
+        <div class="sidebar-sticky pt-3">
+          <ul class="nav flex-column">
+            <li class="nav-item">
+              <a class="nav-link{% if active_page == 'index' %} active {% endif %}"
+                href="{{ url_for('registry.index') }}">
+                <span data-feather="home"></span>
+                Главная
+              </a>
+            </li>
+          </ul>
+          <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
+            <span>Реестры</span>
+            <a class="text-muted" href="{{ url_for('registry.index') }}"
+              aria-label="Управление реестрами" title="Управление реестрами">
+              <span data-feather="settings"></span>
+            </a>
+          </h6>
+          {% if registries_list %}
+          <ul class="nav flex-column mb-2">
+            {% for registry in registries_list %}
+            <li class="nav-item">
+              <div class="d-flex justify-content-between align-items-center">
+                <a class="nav-link {% if active_page == 'registry-%s' % registry.id %} active {% endif %}" href="{{ url_for('inventory.index', regid=registry.id) }}">
+                  <span data-feather="book"></span>
+                  {{ registry.name }}
+                </a>
+              </div>
+            </li>
+            {% endfor %}
+          </ul>
+          {% endif %}
+        </div>
+        
+      </nav>
+
+      <main role="main" class="col-md-8 ml-sm-auto col-lg-9 px-md-4 main">
+        {% for category, message in get_flashed_messages(with_categories=true) %}
+        <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+          {{message|safe}}
+          <button type="button" class="close" data-dismiss="alert" aria-label="Закрыть">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        {% endfor %}
+
+        {% block content %}{% endblock %}
+      </main>
+    </div>
+  </div>
+
+</body>
+
+</html>
