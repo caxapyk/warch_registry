@@ -3,7 +3,6 @@ from flask import Flask, Blueprint, render_template
 from flask_httpauth import HTTPBasicAuth
 from flask_sqlalchemy import SQLAlchemy
 
-
 db = SQLAlchemy()
 auth = HTTPBasicAuth()
 
@@ -14,8 +13,13 @@ bp_registry = Blueprint('registry', 'warch_registry.routes.registry')
 def create_app(config='warch_registry.config.Default'):
     app = Flask(__name__)
     app.config.from_object(config)
-    if os.environ.get('WARCH_REGISTRY_SETTINGS'):
-        app.config.from_envvar('WARCH_REGISTRY_SETTINGS')
+
+    # load configuration from settings.cfg
+    basedir = os.path.abspath(os.path.join(
+        os.path.dirname(__file__), os.pardir))
+    cfg_file = "%s/warch_registry/settings.cfg" % basedir
+    if os.path.exists(cfg_file):
+        app.config.from_pyfile(cfg_file)
 
     db.init_app(app)
 
