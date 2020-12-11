@@ -1,4 +1,4 @@
-from warch_registry import db
+from warch_registry.app import db
 
 
 class RegistryModel(db.Model):

@@ -1,6 +1,6 @@
 from flask import render_template
 
-from warch_registry import auth, bp_main
+from warch_registry.app import auth, bp_main
 
 
 @bp_main.route("/")

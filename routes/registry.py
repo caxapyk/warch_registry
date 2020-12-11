@@ -1,6 +1,6 @@
 from flask import redirect, request, render_template, url_for
 
-from warch_registry import db, auth, bp_registry
+from warch_registry.app import db, auth, bp_registry
 from warch_registry.models import RegistryModel
 from warch_registry.forms import RegistryForm
 

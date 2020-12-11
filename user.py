@@ -1,7 +1,7 @@
 from flask import render_template
 from werkzeug.security import generate_password_hash, check_password_hash
 
-from warch_registry import auth
+from warch_registry.app import auth
 
 users = {
     "reg": {

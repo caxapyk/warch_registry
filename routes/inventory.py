@@ -1,6 +1,6 @@
 from flask import render_template, redirect, request, url_for
 
-from warch_registry import db, auth, bp_inventory
+from warch_registry.app import db, auth, bp_inventory
 from warch_registry.models import RegistryModel, InventoryModel
 from warch_registry.forms import InventoryForm
 
