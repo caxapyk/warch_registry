@@ -10,10 +10,9 @@
 
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
-    <li class="breadcrumb-item"><a href="{{ url_for('registry.index') }}">РОГВ</a></li>
+    <li class="breadcrumb-item"><a href="{{ url_for('main.index') }}">Реестр описей</a></li>
     <li class="breadcrumb-item"><a
-            href="{{ url_for('registry.index', regid=registry_object.id) }}">{{ registry_object.name }}</a>
-    <li class="breadcrumb-item active"><a href="{{ url_for('inventory.index', regid=registry_object.id) }}">Описи</a></li>
+            href="{{ url_for('inventory.index', regid=registry_object.id) }}">{{ registry_object.name }}</a>
         <li class="breadcrumb-item active" aria-current="page">Создать</li>
     </ol>
 </nav>

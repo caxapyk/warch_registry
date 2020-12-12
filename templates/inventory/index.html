@@ -7,7 +7,8 @@
 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
   <h2 class="h2">{{registry_object.name}}</h2>
   <div class="btn-group" role="group">
-    <a class="btn btn-success" href="{{ url_for('inventory.create', regid=registry_object.id) }}" aria-label="Добавить опись" title="Добавить опись">
+    <a class="btn btn-success" href="{{ url_for('inventory.create', regid=registry_object.id) }}"
+      aria-label="Добавить опись" title="Добавить опись">
       <span data-feather="plus"></span>
     </a>
     <button id="actionsButton" type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown"
@@ -25,40 +26,62 @@
 
 <nav aria-label="breadcrumb">
   <ol class="breadcrumb">
-    <li class="breadcrumb-item"><a href="{{ url_for('registry.index') }}">Главная</a></li>
-    <li class="breadcrumb-item"><a href="{{ url_for('registry.index') }}">Реестры</a></li>
+    <li class="breadcrumb-item"><a href="{{ url_for('main.index') }}">Реестр описей</a></li>
     <li class="breadcrumb-item">{{ registry_object.name }}</li>
   </ol>
 </nav>
 
-{% if objects_list %}
-<form action="{{ url_for('inventory.remove', registry_id=registry_object.id) }}" id="selected-form" name="selected-form" method="post">
-  <table class="table">
+{% if objects_list.items %}
+<form action="{{ url_for('inventory.remove', regid=registry_object.id) }}" id="selected-form" name="selected-form"
+  method="post">
+  <table class="table table-bordered inventories-table">
     <thead class="thead-dark">
       <tr>
-        <th scope="col">#</th>
-        <th scope="col">Номер фонда</th>
-        <th scope="col">Номер описи</th>
-        <th scope="col">Название описи</th>
-        <th scope="col">Комментарий</th>
-        <th scope="col" style="width:100px;"></th>
+        <th scope="col" rowspan="2">#</th>
+        <th scope="col" rowspan="2">№ пп</th>
+        <th scope="col" rowspan="2">Номер фонда</th>
+        <th scope="col" rowspan="2">Номер и название описи</th>
+        <th scope="col" colspan="2">Колличество ед. хр.</th>
+        <th scope="col" rowspan="2">Крайние даты</th>
+        <th scope="col" rowspan="2">Колличество экз.</th>
+        <th scope="col" rowspan="2">Примечания</th>
+        <th scope="col" rowspan="2" style="width:100px;"></th>
+      </tr>
+      <tr>
+        <th scope="col">всего</th>
+        <th scope="col">в т.ч. по л.с.</th>
       </tr>
     </thead>
     <tbody>
-      {% for object in objects_list %}
+      {% for object in objects_list.items %}
       <tr>
         <td><input type="checkbox" name="selected" value="{{ object.id }}" \></td>
         <td>{{ object.number }}</td>
+        <td>{{ object.fund_num }}</td>
+        <td>{{ object.inventory_num }}</td>
+        <td>{{ object.record_total }}</td>
+        <td>{{ object.record_private if object.record_private }}</td>
+        <td>{{ object.dates if object.dates }}</td>
+        <td>{{ object.copies }}</td>
+        <td>{{ object.annotation if object.annotation }}</td>
         <td style="width:100px;">
-          <a href="{{ url_for('inventory.update', registry_id=registry_object.id, id=object.id ) }}" title="Редактировать"><span
-              data-feather="edit"></span></a>
-          <a href="{{ url_for('inventory.remove', registry_id=registry_object.id, id=object.id) }}" title="Удалить"
+          <a href="{{ url_for('inventory.update', regid=registry_object.id, id=object.id ) }}"
+            title="Редактировать"><span data-feather="edit"></span></a>
+          <a href="{{ url_for('inventory.remove', regid=registry_object.id, id=object.id) }}" title="Удалить"
             onclick="return confirm('Удалить этот элемент?')"><span data-feather="delete"></span></a>
         </td>
       </tr>
       {% endfor %}
     </tbody>
   </table>
+  {% if objects_list.pages > 1 %}
+  {% if objects_list.has_prev %}<a
+    href="{{ url_for('inventory.index', regid=registry_object.id, page=objects_list.prev_num) }}">&#10229;
+    Сюда</a>{% else %}&#10229; Сюда{% endif %} |
+  {% if objects_list.has_next %}<a
+    href="{{ url_for('inventory.index', regid=registry_object.id, page=objects_list.next_num) }}">Туда
+    &#8594;</a>{% else %}Туда &#8594;{% endif %}
+  {% endif %}
 </form>
 {% else %}
 <p>Список пуст</p>

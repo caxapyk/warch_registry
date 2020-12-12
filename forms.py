@@ -21,7 +21,7 @@ class CustomCheckboxInput(CheckboxInput):
     def __call__(self, field, **kwargs):
         c = kwargs.pop(
             "class", "") or kwargs.pop("class_", "")
-        kwargs["class"] = u"form-control custom-control-input %s" % c
+        kwargs["class"] = u"form-check-input %s" % c
 
         if field.errors:
             kwargs["class"] += self.error_class
@@ -99,34 +99,41 @@ class CustomSubmitInput(SubmitInput):
 
 
 class RegistryForm(BaseForm):
-    name = StringField("Название*:", validators=[
+    name = StringField("Название*", validators=[
                        DataRequired(), Length(min=2, max=100)], widget=CustomTextInput())
     submit = SubmitField("Сохранить", widget=CustomSubmitInput())
 
 
 class InventoryForm(BaseForm):
+    no_choice = [("", u"-- Нет --")]
+
     regid = HiddenField()
-    fund_number = StringField("Номер фонда*:", validators=[
+    number = StringField("№ пп*", validators=[
         DataRequired(), Length(max=50)], widget=CustomTextInput())
-    number = IntegerField("Номер описи:", validators=[
+    fund_num = StringField("Номер фонда*", validators=[
+        DataRequired(), Length(max=50)], widget=CustomTextInput())
+    inventory_num = IntegerField("Номер описи", validators=[
         DataRequired(), NumberRange(min=1, max=999)], widget=CustomNumberInput(min=1, max=999))
-    title = StringField("Название описи:", validators=[
+    inventory_name = StringField("Название описи", validators=[
         Optional(), Length(max=100)], widget=CustomTextInput())
-    valuable = BooleanField("Особо ценное", validators=[
+    valuable = BooleanField("Особо ценные", validators=[
         Optional()], widget=CustomCheckboxInput())
-    record_total = IntegerField("Всего ед. хр.:", validators=[
+    record_total = IntegerField("Всего ед. хр.", validators=[
         DataRequired(), NumberRange(min=1, max=9999)], widget=CustomNumberInput(min=1, max=9999))
-    record_private = IntegerField("В т.ч. по л.с.:", validators=[
+    record_private = IntegerField("В т.ч. по л.с.", validators=[
         Optional(), NumberRange(min=1, max=9999)], widget=CustomNumberInput(min=1, max=9999))
-    dates = StringField("Крайние даты:", validators=[
+    dates = StringField("Крайние даты", validators=[
         Optional(), Length(max=100)], widget=CustomTextInput())
-    copies = IntegerField("Кол-во экз.:", validators=[
+    copies = IntegerField("Кол-во экз.", validators=[
         DataRequired(), NumberRange(min=1, max=9)], widget=CustomNumberInput(min=1, max=9))
-    digital_copy = BooleanField("В т.ч. оцифровано", validators=[
+    digital_copy = BooleanField("В т.ч. цифровая копия", validators=[
         Optional()], widget=CustomCheckboxInput())
-    in_year = SelectField("Год приема:", validators=[
-        Optional()], filters=[lambda x: x or None], widget=CustomSelect(), choices=[y for y in range(1990, date.today().year)])
-    out_year = SelectField("Год приема:", validators=[
-        Optional()], filters=[lambda x: x or None], widget=CustomSelect(), choices=[y for y in range(1990, date.today().year)])
+    annotation = StringField("Примечания", validators=[
+        Optional(), Length(max=255)], widget=CustomTextInput())
+    in_year = SelectField("Год приема", validators=[
+        Optional()], filters=[lambda x: x or None], widget=CustomSelect(), choices=no_choice + [(y, y) for y in reversed(range(1990, date.today().year + 1))])
+    out_year = SelectField("Год выбытия", validators=[
+        Optional()], filters=[lambda x: x or None], widget=CustomSelect(), choices=no_choice + [(y, y) for y in reversed(range(1990, date.today().year + 1))])
 
     submit = SubmitField("Сохранить", widget=CustomSubmitInput())
+

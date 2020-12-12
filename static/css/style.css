@@ -106,8 +106,6 @@ body {
   margin: 0px 15px 0px 15px;
 }
 
-.tab-content {
-  padding: 15px;
+.inventories-table thead th{
+  vertical-align: top;
 }
-
-.row-item { cursor: pointer; }

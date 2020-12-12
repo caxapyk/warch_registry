@@ -6,10 +6,11 @@ from warch_registry.forms import InventoryForm
 
 
 @bp_inventory.route('/<int:regid>')
+@bp_inventory.route('/<int:regid>/page/<int:page>')
 @auth.login_required
-def index(regid):
+def index(regid, page=1):
     registry_object = RegistryModel.query.get(regid)
-    objects_list = InventoryModel.query.filter_by(regid=regid).all()
+    objects_list = InventoryModel.query.filter_by(regid=regid).paginate(page, 2, error_out=False)
 
     return render_template('inventory/index.html', registry_object=registry_object, objects_list=objects_list)
 
@@ -19,6 +20,7 @@ def create(regid):
     registry_object = RegistryModel.query.get(regid)
 
     form = InventoryForm(request.form)
+    form.regid.data = regid
 
     if request.method == 'POST' and form.validate():
         inventory = InventoryModel()
