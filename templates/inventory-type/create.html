@@ -1,0 +1,21 @@
+{% extends "layout.html" %}
+
+{% block title%}Типы описей{% endblock %}
+{% set active_page = 'inventory' %}
+
+{% block content %}
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+    <h2 class="h2">Типы описей</h2>
+</div>
+
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="{{ url_for('main.index') }}">Реестр описей</a></li>
+    <li class="breadcrumb-item"><a
+            href="{{ url_for('inventory_type.index') }}">Типы описей</a>
+        <li class="breadcrumb-item active" aria-current="page">Создать</li>
+    </ol>
+</nav>
+
+{% include 'inventory-type/form.html' %}
+{% endblock %}

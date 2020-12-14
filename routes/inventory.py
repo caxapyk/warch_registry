@@ -1,9 +1,8 @@
 from flask import render_template, redirect, request, url_for
 
 from warch_registry.app import db, auth, bp_inventory
-from warch_registry.models import RegistryModel, InventoryModel
-from warch_registry.forms import InventoryForm
-
+from warch_registry.models import RegistryModel, InventoryModel, InventoryTypeModel
+from warch_registry.forms import InventoryForm, FilterForm
 
 @bp_inventory.route('/<int:regid>')
 @bp_inventory.route('/<int:regid>/page/<int:page>')
@@ -12,15 +11,22 @@ def index(regid, page=1):
     registry_object = RegistryModel.query.get(regid)
     objects_list = InventoryModel.query.filter_by(regid=regid).paginate(page, 2, error_out=False)
 
-    return render_template('inventory/index.html', registry_object=registry_object, objects_list=objects_list)
+    fform = FilterForm(request.form)
+
+    if request.method == 'POST' and fform.validate():
+        pass
+
+    return render_template('inventory/index.html', registry_object=registry_object, objects_list=objects_list, fform=fform)
 
 @bp_inventory.route('/<int:regid>/create', methods=['GET', 'POST'])
 @auth.login_required(role='manager')
 def create(regid):
     registry_object = RegistryModel.query.get(regid)
+    inventory_type_list = InventoryTypeModel.query.all()
 
     form = InventoryForm(request.form)
     form.regid.data = regid
+    form.inventory_type = ['Без типа'] + [(it.id, it.name) for it in inventory_type_list]
 
     if request.method == 'POST' and form.validate():
         inventory = InventoryModel()
@@ -39,7 +45,11 @@ def update(regid, id):
     registry_object = RegistryModel.query.get(regid)
     inventory = InventoryModel.query.get(id)
 
+    inventory_type_list = InventoryTypeModel.query.all()
+
     form = InventoryForm(request.form, obj=inventory)
+    form.inventory_type = ['Без типа'] + \
+        [(it.id, it.name) for it in inventory_type_list]
 
     if request.method == 'POST' and form.validate():
         form.populate_obj(inventory)

@@ -32,6 +32,8 @@
 </nav>
 
 {% if objects_list.items %}
+{% include 'inventory/filter-form.html' %}
+
 <form action="{{ url_for('inventory.remove', regid=registry_object.id) }}" id="selected-form" name="selected-form"
   method="post">
   <table class="table table-bordered inventories-table">
@@ -54,7 +56,7 @@
     </thead>
     <tbody>
       {% for object in objects_list.items %}
-      <tr>
+      <tr class="{% if object.out_year %}table-danger{% else %}{% if object.in_year %}table-light{% else %}table-warning{% endif%}{% endif%}">
         <td><input type="checkbox" name="selected" value="{{ object.id }}" \></td>
         <td>{{ object.number }}</td>
         <td>{{ object.fund_num }}</td>

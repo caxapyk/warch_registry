@@ -93,19 +93,42 @@ class CustomSubmitInput(SubmitInput):
     def __call__(self, field, **kwargs):
         c = kwargs.pop(
             "class", "") or kwargs.pop("class_", "")
-        kwargs["class"] = u"btn btn-primary %s" % c
+        if c:
+            kwargs["class"] = c
+        else:
+            kwargs["class"] = u"btn btn-primary"
 
         return super(CustomSubmitInput, self).__call__(field, **kwargs)
 
 
 class RegistryForm(BaseForm):
     name = StringField("Название*", validators=[
-                       DataRequired(), Length(min=2, max=100)], widget=CustomTextInput())
+                       DataRequired(), Length(max=100)], widget=CustomTextInput())
+    submit = SubmitField("Сохранить", widget=CustomSubmitInput())
+
+
+class FilterForm(BaseForm):
+    no_choice = [("", u"-- Все --")]
+
+    fund_num = StringField("Номер фонда*", validators=[
+        DataRequired(), Length(max=50)], widget=CustomTextInput())
+    inventory_num = IntegerField("Номер описи", validators=[
+        Optional(), NumberRange(min=1, max=999)], widget=CustomNumberInput(min=1, max=999))
+    year = SelectField("Год", validators=[
+        Optional()], widget=CustomSelect(), choices=no_choice + [(y, y) for y in reversed(range(1990, date.today().year + 1))])
+    submit = SubmitField("Фильтр", widget=CustomSubmitInput())
+
+
+class InventoryTypeForm(BaseForm):
+    name = StringField("Название*", validators=[
+                       DataRequired(), Length(max=100)], widget=CustomTextInput())
+    short_name = StringField("Краткое наименование*", validators=[
+                       DataRequired(), Length(max=10)], widget=CustomTextInput())
     submit = SubmitField("Сохранить", widget=CustomSubmitInput())
 
 
 class InventoryForm(BaseForm):
-    no_choice = [("", u"-- Нет --")]
+    no_choice = [("", u"-- Не указан --")]
 
     regid = HiddenField()
     number = StringField("№ пп*", validators=[
@@ -116,6 +139,8 @@ class InventoryForm(BaseForm):
         DataRequired(), NumberRange(min=1, max=999)], widget=CustomNumberInput(min=1, max=999))
     inventory_name = StringField("Название описи", validators=[
         Optional(), Length(max=100)], widget=CustomTextInput())
+    inventory_type = SelectField("Тип описи", validators=[
+        Optional()], filters=[lambda x: x or None], widget=CustomSelect())
     valuable = BooleanField("Особо ценные", validators=[
         Optional()], widget=CustomCheckboxInput())
     record_total = IntegerField("Всего ед. хр.", validators=[

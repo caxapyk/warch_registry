@@ -36,8 +36,7 @@
         <div class="sidebar-sticky pt-3">
           <ul class="nav flex-column">
             <li class="nav-item">
-              <a class="nav-link{% if active_page == 'index' %} active {% endif %}"
-                href="{{ url_for('main.index') }}">
+              <a class="nav-link{% if active_page == 'index' %} active {% endif %}" href="{{ url_for('main.index') }}">
                 <span data-feather="home"></span>
                 Главная
               </a>
@@ -45,8 +44,8 @@
           </ul>
           <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
             <span>Реестры</span>
-            <a class="text-muted" href="{{ url_for('registry.index') }}"
-              aria-label="Управление реестрами" title="Управление реестрами">
+            <a class="text-muted" href="{{ url_for('registry.index') }}" aria-label="Управление реестрами"
+              title="Управление реестрами">
               <span data-feather="settings"></span>
             </a>
           </h6>
@@ -55,7 +54,8 @@
             {% for registry in registries_list %}
             <li class="nav-item">
               <div class="d-flex justify-content-between align-items-center">
-                <a class="nav-link {% if active_page == 'registry-%s' % registry.id %} active {% endif %}" href="{{ url_for('inventory.index', regid=registry.id) }}">
+                <a class="nav-link {% if active_page == 'registry-%s' % registry.id %} active {% endif %}"
+                  href="{{ url_for('inventory.index', regid=registry.id) }}">
                   <span data-feather="book"></span>
                   {{ registry.name }}
                 </a>
@@ -64,8 +64,22 @@
             {% endfor %}
           </ul>
           {% endif %}
+          <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
+            <span>Справочники</span>
+          </h6>
+          <ul class="nav flex-column mb-2">
+            <li class="nav-item">
+              <div class="d-flex justify-content-between align-items-center">
+                <a class="nav-link {% if active_page == 'inventory_type' %} active {% endif %}"
+                  href="{{ url_for('inventory_type.index') }}">
+                  <span data-feather="type"></span>
+                  Типы описей
+                </a>
+              </div>
+            </li>
+            </ul>
+            
         </div>
-        
       </nav>
 
       <main role="main" class="col-md-8 ml-sm-auto col-lg-9 px-md-4 main">

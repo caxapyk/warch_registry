@@ -1,0 +1,60 @@
+<form method="post" class="mb-3" autocomplete="off">
+    <div class="form-row row">
+        <div class="col-lg-6">
+            <div class="row mt-2">
+                <div class="col-lg-4">
+                    {{ fform.fund_num.label() }}
+                </div>
+                <div class="col-lg-8">
+                    {{ fform.fund_num(placeholder='№') }}
+                    <div id="fund_numValidationFeedback" class="invalid-feedback">
+                        {% for error in fform.errors['fund_num'] %}
+                        {{error}}.<br />
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-2">
+                <div class="col-lg-4">
+                    {{ fform.inventory_num.label() }}
+                </div>
+                <div class="col-lg-8">
+                    {{ fform.inventory_num(placeholder='№') }}
+                    <div id="inventory_numValidationFeedback" class="invalid-feedback">
+                        {% for error in fform.errors['inventory_num'] %}
+                        {{error}}.<br />
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-2">
+                <div class="col-lg-4">
+                    {{ fform.year.label() }}
+                </div>
+                <div class="col-lg-8">
+                    {{ fform.year() }}
+                    <div id="inventory_numValidationFeedback" class="invalid-feedback">
+                        {% for error in fform.errors['year'] %}
+                        {{error}}.<br />
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+            <div class="row mt-2">
+                <div class="col-lg-12">
+                    {{ fform.submit(class_="btn btn-light") }}
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-6">
+            <div class="row mt-2 ml-3">
+                <div class="col-lg-12">
+                    <strong>Условные обозначения:</strong>
+                    <div><span class="badge badge-light">&nbsp;&nbsp;&nbsp;</span> опись принята</div>
+                    <div><span class="badge badge-warning">&nbsp;&nbsp;&nbsp;</span> не указан год приема</div>
+                    <div><span class="badge badge-danger">&nbsp;&nbsp;&nbsp;</span> опись выбыла</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

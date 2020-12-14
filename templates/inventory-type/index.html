@@ -1,0 +1,66 @@
+{% extends "layout.html" %}
+
+{% block title%}Типы описей{% endblock %}
+{% set active_page = 'inventory_type' %}
+
+{% block content %}
+<div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+  <h2 class="h2">Типы описей</h2>
+  <div class="btn-group" role="group">
+    <a class="btn btn-success" href="{{ url_for('inventory_type.create') }}"
+      aria-label="Добавить тип" title="Добавить тип">
+      <span data-feather="plus"></span>
+    </a>
+    <button id="actionsButton" type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown"
+      aria-haspopup="true" aria-expanded="false">
+      Действия
+    </button>
+    <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+      <a href="#" class="dropdown-item" id="selected-remove" role="button" aria-pressed="true">
+        <span data-feather="trash"></span>
+        Удалить отмеченные
+      </a>
+    </div>
+  </div>
+</div>
+
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="{{ url_for('main.index') }}">Реестр описей</a></li>
+    <li class="breadcrumb-item">Типы описей</li>
+  </ol>
+</nav>
+
+{% if objects_list %}
+<form action="{{ url_for('inventory_type.remove') }}" id="selected-form" name="selected-form"
+  method="post">
+  <table class="table">
+    <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Название</th>
+        <th scope="col">Краткое наименование</th>
+        <th scope="col" style="width:100px;"></th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for object in objects_list %}
+      <tr>
+        <td><input type="checkbox" name="selected" value="{{ object.id }}" \></td>
+        <td>{{ object.name }}</td>
+        <td>{{ object.short_name }}</td>
+        <td style="width:100px;">
+          <a href="{{ url_for('inventory_type.update', id=object.id ) }}"
+            title="Редактировать"><span data-feather="edit"></span></a>
+          <a href="{{ url_for('inventory_type.remove', id=object.id) }}" title="Удалить"
+            onclick="return confirm('Удалить этот элемент?')"><span data-feather="delete"></span></a>
+        </td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</form>
+{% else %}
+<p>Список пуст</p>
+{% endif %}
+{% endblock %}
