@@ -1,0 +1,51 @@
+<form method="get" class="mb-3" autocomplete="off">
+    <div class="row mt-2">
+        <div class="col-lg-4">
+            {{ fform.fund_num.label() }}
+        </div>
+        <div class="col-lg-8">
+            {{ fform.fund_num(placeholder='№') }}
+            <div id="fund_numValidationFeedback" class="invalid-feedback">
+                {% for error in fform.errors['fund_num'] %}
+                {{error}}.<br />
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    <div class="row mt-2">
+        <div class="col-lg-4">
+            {{ fform.inventory_num.label() }}
+        </div>
+        <div class="col-lg-8">
+            {{ fform.inventory_num(placeholder='№') }}
+            <div id="inventory_numValidationFeedback" class="invalid-feedback">
+                {% for error in fform.errors['inventory_num'] %}
+                {{error}}.<br />
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    <div class="row mt-2">
+        <div class="col-lg-4">
+            {{ fform.year.label() }}
+        </div>
+        <div class="col-lg-8">
+            {{ fform.year() }}
+            <div class="mt-1 ml-4">
+                {{ fform.lowcopy() }}
+                {{ fform.lowcopy.label() }}
+            </div>
+            <div id="inventory_numValidationFeedback" class="invalid-feedback">
+                {% for error in fform.errors['year'] %}
+                {{error}}.<br />
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    <div class="row mt-2">
+        <div class="col-lg-12">
+            {{ fform.submit(class_="btn btn-light") }}
+            <button type="reset" class="btn btn-light" value="Reset">Очистить</button>
+        </div>
+    </div>
+</form>

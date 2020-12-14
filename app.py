@@ -11,6 +11,7 @@ bp_inventory = Blueprint('inventory', 'warch_registry.routes.inventory')
 bp_inventory_type = Blueprint(
     'inventory_type', 'warch_registry.routes.inventory_type')
 bp_registry = Blueprint('registry', 'warch_registry.routes.registry')
+bp_summary = Blueprint('summary', 'warch_registry.routes.summary')
 
 def create_app(config='warch_registry.config.Default'):
     app = Flask(__name__)
@@ -26,7 +27,7 @@ def create_app(config='warch_registry.config.Default'):
     db.init_app(app)
 
     with app.app_context():
-        from warch_registry.routes import main, inventory, inventory_type, registry
+        from warch_registry.routes import main, inventory, inventory_type, registry, summary
         import warch_registry.context_processors
         import warch_registry.error
         import warch_registry.user
@@ -35,5 +36,6 @@ def create_app(config='warch_registry.config.Default'):
         app.register_blueprint(bp_inventory, url_prefix='/registry')
         app.register_blueprint(bp_inventory_type, url_prefix='/inventory-type')
         app.register_blueprint(bp_registry, url_prefix='/registries')
+        app.register_blueprint(bp_summary, url_prefix='/summary')
 
         return app

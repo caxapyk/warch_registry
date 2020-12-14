@@ -5,7 +5,8 @@
 
 {% block content %}
 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-  <h2 class="h2">{{registry_object.name}}</h2>
+  <h2 class="h2">{{registry_object.name}}{% if objects_list.items %} <span
+      class="badge badge-info">{{ objects_list.total }}</span>{% endif %}</h2>
   <div class="btn-group" role="group">
     <a class="btn btn-success" href="{{ url_for('inventory.create', regid=registry_object.id) }}"
       aria-label="Добавить опись" title="Добавить опись">
@@ -31,9 +32,20 @@
   </ol>
 </nav>
 
-{% if objects_list.items %}
-{% include 'inventory/filter-form.html' %}
+<div class="row">
+  <div class="col-lg-6">
+    {% include 'inventory/filter.html' %}
+  </div>
+  <div class="col-lg-6">
+    <div class="mt-2"></div>
+      <strong>Условные обозначения:</strong><br/>
+      <span class="badge badge-light">&nbsp;&nbsp;&nbsp;</span> опись принята<br/>
+      <span class="badge badge-warning">&nbsp;&nbsp;&nbsp;</span> не указан год приема<br/>
+      <span class="badge badge-danger">&nbsp;&nbsp;&nbsp;</span> опись выбыла
+    </div>
+</div>
 
+{% if objects_list.items %}
 <form action="{{ url_for('inventory.remove', regid=registry_object.id) }}" id="selected-form" name="selected-form"
   method="post">
   <table class="table table-bordered inventories-table">
@@ -56,15 +68,17 @@
     </thead>
     <tbody>
       {% for object in objects_list.items %}
-      <tr class="{% if object.out_year %}table-danger{% else %}{% if object.in_year %}table-light{% else %}table-warning{% endif%}{% endif%}">
+      <tr
+        class="{% if object.out_year %}table-danger{% else %}{% if object.in_year %}table-light{% else %}table-warning{% endif%}{% endif%}">
         <td><input type="checkbox" name="selected" value="{{ object.id }}" \></td>
         <td>{{ object.number }}</td>
         <td>{{ object.fund_num }}</td>
-        <td>{{ object.inventory_num }} {{ object.inventorytype.short_name if object.inventorytype.short_name }}</td>
+        <td>{{ object.inventory_num }} {{ object.inventorytype.short_name if object.inventorytype.short_name }}
+          {% if object.digital_copy %}(ОЦ){% endif %}</td>
         <td>{{ object.record_total }}</td>
         <td>{{ object.record_private if object.record_private }}</td>
         <td>{{ object.dates if object.dates }}</td>
-        <td>{{ object.copies }}</td>
+        <td>{{ object.copies }}{% if object.digital_copy %}Ц{% endif %}</td>
         <td>{{ object.annotation if object.annotation }}</td>
         <td style="width:100px;">
           <a href="{{ url_for('inventory.update', regid=registry_object.id, id=object.id ) }}"

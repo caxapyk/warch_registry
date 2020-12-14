@@ -111,11 +111,13 @@ class FilterForm(BaseForm):
     no_choice = [("", u"-- Все --")]
 
     fund_num = StringField("Номер фонда*", validators=[
-        DataRequired(), Length(max=50)], widget=CustomTextInput())
+        Optional(), Length(max=50)], widget=CustomTextInput())
     inventory_num = IntegerField("Номер описи", validators=[
         Optional(), NumberRange(min=1, max=999)], widget=CustomNumberInput(min=1, max=999))
     year = SelectField("Год", validators=[
         Optional()], widget=CustomSelect(), choices=no_choice + [(y, y) for y in reversed(range(1990, date.today().year + 1))])
+    lowcopy = BooleanField("Неполный комплект", validators=[
+        Optional()], widget=CustomCheckboxInput())
     submit = SubmitField("Фильтр", widget=CustomSubmitInput())
 
 
@@ -150,7 +152,7 @@ class InventoryForm(BaseForm):
     dates = StringField("Крайние даты", validators=[
         Optional(), Length(max=100)], widget=CustomTextInput())
     copies = IntegerField("Кол-во экз.", validators=[
-        DataRequired(), NumberRange(min=1, max=9)], widget=CustomNumberInput(min=1, max=9))
+        DataRequired(), NumberRange(min=1, max=3)], widget=CustomNumberInput(min=1, max=3))
     digital_copy = BooleanField("В т.ч. цифровая копия", validators=[
         Optional()], widget=CustomCheckboxInput())
     annotation = StringField("Примечания", validators=[

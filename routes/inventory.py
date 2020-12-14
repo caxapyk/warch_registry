@@ -9,12 +9,30 @@ from warch_registry.forms import InventoryForm, FilterForm
 @auth.login_required
 def index(regid, page=1):
     registry_object = RegistryModel.query.get(regid)
-    objects_list = InventoryModel.query.filter_by(regid=regid).paginate(page, 2, error_out=False)
 
-    fform = FilterForm(request.form)
+    fform = FilterForm(request.values)
 
-    if request.method == 'POST' and fform.validate():
-        pass
+    filter = list()
+
+    filter.append(InventoryModel.regid == regid)
+
+    if request.method == 'GET' and request.args and fform.validate():
+        if request.args.get('fund_num'):
+            filter.append(InventoryModel.fund_num ==
+                            request.args.get('fund_num'))
+
+        if request.args.get('inventory_num'):
+            filter.append(InventoryModel.fund_num ==
+                            request.args.get('inventory_num'))
+
+        if request.args.get('year'):
+            filter.append(InventoryModel.in_year ==
+                          request.args.get('year'))
+        
+        if request.args.get('lowcopy'):
+            filter.append(InventoryModel.copies < 3)
+
+    objects_list = InventoryModel.query.filter(*filter).paginate(page, 2, error_out=False)
 
     return render_template('inventory/index.html', registry_object=registry_object, objects_list=objects_list, fform=fform)
 
