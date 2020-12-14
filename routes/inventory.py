@@ -26,7 +26,8 @@ def create(regid):
 
     form = InventoryForm(request.form)
     form.regid.data = regid
-    form.inventory_type = ['Без типа'] + [(it.id, it.name) for it in inventory_type_list]
+    form.inventory_type.choices = ['Без типа'] + \
+        [(it.id, it.name) for it in inventory_type_list]
 
     if request.method == 'POST' and form.validate():
         inventory = InventoryModel()
@@ -48,8 +49,8 @@ def update(regid, id):
     inventory_type_list = InventoryTypeModel.query.all()
 
     form = InventoryForm(request.form, obj=inventory)
-    form.inventory_type = ['Без типа'] + \
-        [(it.id, it.name) for it in inventory_type_list]
+    form.inventory_type.choices = [("",u"Без типа")] + \
+        [(it.id, it.short_name) for it in inventory_type_list]
 
     if request.method == 'POST' and form.validate():
         form.populate_obj(inventory)

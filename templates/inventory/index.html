@@ -60,7 +60,7 @@
         <td><input type="checkbox" name="selected" value="{{ object.id }}" \></td>
         <td>{{ object.number }}</td>
         <td>{{ object.fund_num }}</td>
-        <td>{{ object.inventory_num }}</td>
+        <td>{{ object.inventory_num }} {{ object.inventorytype.short_name if object.inventorytype.short_name }}</td>
         <td>{{ object.record_total }}</td>
         <td>{{ object.record_private if object.record_private }}</td>
         <td>{{ object.dates if object.dates }}</td>

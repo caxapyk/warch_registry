@@ -23,7 +23,7 @@ class InventoryModel(db.Model):
     number = db.Column(db.String(20), nullable=False)
     fund_num = db.Column(db.String(50), nullable=False)
     inventory_num = db.Column(db.Integer, nullable=False)
-    #inventory_type = db.Column(db.Integer, db.ForeignKey('ri_inventory-type.id'), nullable=True)
+    inventory_type = db.Column(db.Integer, db.ForeignKey('ri_inventory-type.id'), nullable=True)
     inventory_name = db.Column(db.String(100), nullable=True)
     valuable = db.Column(db.Boolean, nullable=False)
     record_total = db.Column(db.Integer, nullable=False)
@@ -36,4 +36,4 @@ class InventoryModel(db.Model):
     out_year = db.Column(db.Integer, nullable=True)
 
     registry = db.relationship("RegistryModel")
-    #inventory_type = db.relationship("InventoryTypeModel")
+    inventorytype = db.relationship("InventoryTypeModel")
