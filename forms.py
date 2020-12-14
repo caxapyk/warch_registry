@@ -104,6 +104,8 @@ class CustomSubmitInput(SubmitInput):
 class RegistryForm(BaseForm):
     name = StringField("Название*", validators=[
                        DataRequired(), Length(max=100)], widget=CustomTextInput())
+    valuable = BooleanField("Реестр особо ценных описей", validators=[
+        Optional()], widget=CustomCheckboxInput())
     submit = SubmitField("Сохранить", widget=CustomSubmitInput())
 
 
@@ -143,8 +145,6 @@ class InventoryForm(BaseForm):
         Optional(), Length(max=100)], widget=CustomTextInput())
     inventory_type = SelectField("Тип описи", validators=[
         Optional()], filters=[lambda x: x or None], widget=CustomSelect())
-    valuable = BooleanField("Особо ценные", validators=[
-        Optional()], widget=CustomCheckboxInput())
     record_total = IntegerField("Всего ед. хр.", validators=[
         DataRequired(), NumberRange(min=1, max=9999)], widget=CustomNumberInput(min=1, max=9999))
     record_private = IntegerField("В т.ч. по л.с.", validators=[

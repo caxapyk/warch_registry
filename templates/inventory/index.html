@@ -5,8 +5,8 @@
 
 {% block content %}
 <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-  <h2 class="h2">{{registry_object.name}}{% if objects_list.items %} <span
-      class="badge badge-info">{{ objects_list.total }}</span>{% endif %}</h2>
+  <h2 class="h2">{{registry_object.name}} {% if registry_object.valuable %}<span
+      class="badge badge-danger">ОЦ</span>{% endif %}</h2>
   <div class="btn-group" role="group">
     <a class="btn btn-success" href="{{ url_for('inventory.create', regid=registry_object.id) }}"
       aria-label="Добавить опись" title="Добавить опись">
@@ -38,18 +38,31 @@
   </div>
   <div class="col-lg-6">
     <div class="mt-2"></div>
-      <strong>Условные обозначения:</strong><br/>
-      <span class="badge badge-light">&nbsp;&nbsp;&nbsp;</span> опись принята<br/>
-      <span class="badge badge-warning">&nbsp;&nbsp;&nbsp;</span> не указан год приема<br/>
-      <span class="badge badge-danger">&nbsp;&nbsp;&nbsp;</span> опись выбыла
-    </div>
+    <strong>Условные обозначения:</strong><br />
+    <span class="badge badge-light">&nbsp;&nbsp;&nbsp;</span> опись принята<br />
+    <span class="badge badge-warning">&nbsp;&nbsp;&nbsp;</span> не указан год приема<br />
+    <span class="badge badge-danger">&nbsp;&nbsp;&nbsp;</span> опись выбыла
+  </div>
 </div>
 
 {% if objects_list.items %}
+<strong>Результатов: {{ objects_list.total }}</strong>
 <form action="{{ url_for('inventory.remove', regid=registry_object.id) }}" id="selected-form" name="selected-form"
   method="post">
   <table class="table table-bordered inventories-table">
     <thead class="thead-dark">
+      {% if registry_object.valuable %}
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">№ пп</th>
+        <th scope="col">Номер фонда</th>
+        <th scope="col">Номер и название описи</th>
+        <th scope="col">Всего единиц хранения</th>
+        <th scope="col">Колличество экземпляров</th>
+        <th scope="col">Примечания</th>
+        <th scope="col" style="width:100px;"></th>
+      </tr>
+      {% else %}
       <tr>
         <th scope="col" rowspan="2">#</th>
         <th scope="col" rowspan="2">№ пп</th>
@@ -65,6 +78,7 @@
         <th scope="col">всего</th>
         <th scope="col">в т.ч. по л.с.</th>
       </tr>
+      {% endif %}
     </thead>
     <tbody>
       {% for object in objects_list.items %}
@@ -76,8 +90,8 @@
         <td>{{ object.inventory_num }} {{ object.inventorytype.short_name if object.inventorytype.short_name }}
           {% if object.digital_copy %}(ОЦ){% endif %}</td>
         <td>{{ object.record_total }}</td>
-        <td>{{ object.record_private if object.record_private }}</td>
-        <td>{{ object.dates if object.dates }}</td>
+        {% if not registry_object.valuable %}<td>{{ object.record_private if object.record_private }}</td>{% endif %}
+        {% if not registry_object.valuable %}<td>{{ object.dates if object.dates }}</td>{% endif %}
         <td>{{ object.copies }}{% if object.digital_copy %}Ц{% endif %}</td>
         <td>{{ object.annotation if object.annotation }}</td>
         <td style="width:100px;">

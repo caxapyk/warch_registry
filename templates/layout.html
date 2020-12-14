@@ -57,7 +57,7 @@
                 <a class="nav-link {% if active_page == 'registry-%s' % registry.id %} active {% endif %}"
                   href="{{ url_for('inventory.index', regid=registry.id) }}">
                   <span data-feather="book"></span>
-                  {{ registry.name }}
+                  {{ registry.name }} {% if registry.valuable %}<span class="badge badge-danger">ОЦ</span>{% endif %}
                 </a>
               </div>
             </li>

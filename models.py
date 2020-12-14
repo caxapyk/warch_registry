@@ -6,6 +6,7 @@ class RegistryModel(db.Model):
 
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)
+    valuable = db.Column(db.Boolean, nullable=False)
 
 
 class InventoryTypeModel(db.Model):
@@ -25,7 +26,6 @@ class InventoryModel(db.Model):
     inventory_num = db.Column(db.Integer, nullable=False)
     inventory_type = db.Column(db.Integer, db.ForeignKey('ri_inventory-type.id'), nullable=True)
     inventory_name = db.Column(db.String(100), nullable=True)
-    valuable = db.Column(db.Boolean, nullable=False)
     record_total = db.Column(db.Integer, nullable=False)
     record_private = db.Column(db.Integer, nullable=True)
     dates = db.Column(db.String(100), nullable=True)
