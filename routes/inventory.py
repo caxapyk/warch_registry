@@ -1,4 +1,5 @@
 from flask import render_template, redirect, request, url_for
+from sqlalchemy import and_
 
 from warch_registry.app import db, auth, bp_inventory
 from warch_registry.models import RegistryModel, InventoryModel, InventoryTypeModel
@@ -9,11 +10,12 @@ from warch_registry.forms import InventoryForm, FilterForm
 @auth.login_required
 def index(regid, page=1):
     registry_object = RegistryModel.query.get(regid)
+    no_years_count = RegistryModel.query.filter(
+        and_(InventoryModel.regid == regid, InventoryModel.in_year == None, InventoryModel.out_year == None)).count()
 
     fform = FilterForm(request.values)
 
     filter = list()
-
     filter.append(InventoryModel.regid == regid)
 
     if request.method == 'GET' and request.args and fform.validate():
@@ -32,9 +34,12 @@ def index(regid, page=1):
         if request.args.get('lowcopy'):
             filter.append(InventoryModel.copies < 3)
 
-    objects_list = InventoryModel.query.filter(*filter).paginate(page, 2, error_out=False)
+        if request.args.get('no_years'):
+            filter.append(and_(InventoryModel.in_year == None, InventoryModel.out_year == None))
 
-    return render_template('inventory/index.html', registry_object=registry_object, objects_list=objects_list, fform=fform)
+    objects_list = InventoryModel.query.filter(*filter).paginate(page, 1, error_out=False)
+
+    return render_template('inventory/index.html', registry_object=registry_object, objects_list=objects_list, fform=fform, no_years_count=no_years_count)
 
 @bp_inventory.route('/<int:regid>/create', methods=['GET', 'POST'])
 @auth.login_required(role='manager')

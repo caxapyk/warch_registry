@@ -32,6 +32,7 @@
   </ol>
 </nav>
 
+{% if objects_list.items %}
 <div class="row">
   <div class="col-lg-6">
     {% include 'inventory/filter.html' %}
@@ -45,7 +46,13 @@
   </div>
 </div>
 
-{% if objects_list.items %}
+{% if no_years_count %}
+<div class="alert alert-warning" role="alert">
+  Внимание! В реестре содержатся описи ({{ (no_years_count/2)|int }}), не имеющие одновременно дат приема и выбытия.
+  Такие описи могут стать причиной неверных результатов в суммарном учете.
+  <a href="{{ url_for('inventory.index', regid=registry_object.id, no_years=True) }}">Исправить?</a>
+</div>
+{% endif %}
 <strong>Результатов: {{ objects_list.total }}</strong>
 <form action="{{ url_for('inventory.remove', regid=registry_object.id) }}" id="selected-form" name="selected-form"
   method="post">
@@ -56,8 +63,8 @@
         <th scope="col">#</th>
         <th scope="col">№ пп</th>
         <th scope="col">Номер фонда</th>
-        <th scope="col">Номер и название описи</th>
-        <th scope="col">Всего единиц хранения</th>
+        <th scope="col">Номер описи (номерника)</th>
+        <th scope="col">Колличество ед. хр.</th>
         <th scope="col">Колличество экземпляров</th>
         <th scope="col">Примечания</th>
         <th scope="col" style="width:100px;"></th>
@@ -87,8 +94,7 @@
         <td><input type="checkbox" name="selected" value="{{ object.id }}" \></td>
         <td>{{ object.number }}</td>
         <td>{{ object.fund_num }}</td>
-        <td>{{ object.inventory_num }} {{ object.inventorytype.short_name if object.inventorytype.short_name }}
-          {% if object.digital_copy %}(ОЦ){% endif %}</td>
+        <td>{{ object.inventory_num }} {% if not registry_object.valuable %}{{ object.inventorytype.short_name if object.inventorytype.short_name }}{% endif %}</td>
         <td>{{ object.record_total }}</td>
         {% if not registry_object.valuable %}<td>{{ object.record_private if object.record_private }}</td>{% endif %}
         {% if not registry_object.valuable %}<td>{{ object.dates if object.dates }}</td>{% endif %}
@@ -106,10 +112,10 @@
   </table>
   {% if objects_list.pages > 1 %}
   {% if objects_list.has_prev %}<a
-    href="{{ url_for('inventory.index', regid=registry_object.id, page=objects_list.prev_num) }}">&#10229;
+    href="{{ url_for('inventory.index', regid=registry_object.id, page=objects_list.prev_num, fund_num=fform.fund_num.data, inventory_num=fform.inventory_num.data, year=fform.year.data, lowcopy=fform.lowcopy.data, no_years=fform.no_years.data) }}">&#10229;
     Сюда</a>{% else %}&#10229; Сюда{% endif %} |
   {% if objects_list.has_next %}<a
-    href="{{ url_for('inventory.index', regid=registry_object.id, page=objects_list.next_num) }}">Туда
+    href="{{ url_for('inventory.index', regid=registry_object.id, page=objects_list.next_num, fund_num=fform.fund_num.data, inventory_num=fform.inventory_num.data, year=fform.year.data, lowcopy=fform.lowcopy.data, no_years=fform.no_years.data) }}">Туда
     &#8594;</a>{% else %}Туда &#8594;{% endif %}
   {% endif %}
 </form>

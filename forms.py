@@ -112,20 +112,22 @@ class RegistryForm(BaseForm):
 class FilterForm(BaseForm):
     no_choice = [("", u"-- Все --")]
 
-    fund_num = StringField("Номер фонда*", validators=[
-        Optional(), Length(max=50)], widget=CustomTextInput())
+    fund_num = StringField("Номер фонда", validators=[
+        Optional(), Length(max=50)], filters=[lambda x: x or None], widget=CustomTextInput())
     inventory_num = IntegerField("Номер описи", validators=[
-        Optional(), NumberRange(min=1, max=999)], widget=CustomNumberInput(min=1, max=999))
+        Optional(), NumberRange(min=1, max=999)], filters=[lambda x: x or None], widget=CustomNumberInput(min=1, max=999))
     year = SelectField("Год", validators=[
-        Optional()], widget=CustomSelect(), choices=no_choice + [(y, y) for y in reversed(range(1990, date.today().year + 1))])
+        Optional()], widget=CustomSelect(), filters=[lambda x: x or None], choices=no_choice + [(y, y) for y in reversed(range(1990, date.today().year + 1))])
     lowcopy = BooleanField("Неполный комплект", validators=[
-        Optional()], widget=CustomCheckboxInput())
+        Optional()], filters=[lambda x: x or None], widget=CustomCheckboxInput())
+    no_years = BooleanField(validators=[
+        Optional()], filters=[lambda x: x or None], widget=CustomCheckboxInput())
     submit = SubmitField("Фильтр", widget=CustomSubmitInput())
 
 
 class InventoryTypeForm(BaseForm):
     name = StringField("Название*", validators=[
-                       DataRequired(), Length(max=100)], widget=CustomTextInput())
+                       DataRequired(), Length(max=100)], widget=CustomTextInput()) 
     short_name = StringField("Краткое наименование*", validators=[
                        DataRequired(), Length(max=10)], widget=CustomTextInput())
     submit = SubmitField("Сохранить", widget=CustomSubmitInput())
