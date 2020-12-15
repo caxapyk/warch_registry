@@ -151,7 +151,9 @@ class InventoryForm(BaseForm):
         DataRequired(), Length(max=50)], widget=CustomTextInput())
     fund_num = StringField("Номер фонда*", validators=[
         DataRequired(), Length(max=50)], widget=CustomTextInput())
-    inventory_num = IntegerField("Номер описи", validators=[
+    inventory_num = StringField("Номер описи", validators=[
+        Optional(), Length(max=10)], widget=CustomTextInput())
+    IntegerField("Номер описи", validators=[
         DataRequired(), NumberRange(min=1, max=999)], widget=CustomNumberInput(min=1, max=999))
     inventory_name = StringField("Заголовок описи", validators=[
         Optional(), Length(max=100)], widget=CustomTextInput())

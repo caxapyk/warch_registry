@@ -42,6 +42,8 @@ def index():
         if request.args.get('year'):
             out_filter.append(InventoryModel.out_year ==
                           request.args.get('year'))
+        else:
+            out_filter.append(InventoryModel.out_year.isnot(None))
         out_ = InventoryModel.query.filter(*out_filter).count()
 
         return render_template('summary/index.html', form=form, total_=total_, in_=in_, in_complect_=in_complect_, in_by_type_=in_by_type_, out_=out_)

@@ -1,7 +1,13 @@
-<form method="get" class="form-inline" autocomplete="off">
-    <div class="mb-2 mr-sm-2">{{ form.registry_id.label() }}</div>
-    <div class="mb-2 mr-sm-2">{{ form.registry_id() }}</div>
-    <div class="mb-2 mr-sm-2">{{ form.year.label() }}</div>
-    <div class="mb-2 mr-sm-2">{{ form.year() }}</div>
-    <div class="mb-2 mr-sm-2">{{ form.submit(class_="btn btn-light") }}</div>
+<form method="get" autocomplete="off">
+    <div class="form-group">
+        {{ form.registry_id.label() }}
+        {{ form.registry_id() }}
+    </div>
+    <div class="form-group">
+        {{ form.year.label() }}
+        {{ form.year() }}
+    </div>
+    <div class="form-group">
+        {{ form.submit(class_="btn btn-light") }}
+    </div>
 </form>

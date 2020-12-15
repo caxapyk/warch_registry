@@ -95,7 +95,7 @@
         <td><input type="checkbox" name="selected" value="{{ object.id }}" \></td>
         <td>{{ object.number }}</td>
         <td>{{ object.fund_num }}</td>
-        <td>{{ object.inventory_num }} {% if not registry_object.valuable %}{{ object.inventorytype.short_name if object.inventorytype.short_name }}{% endif %}</td>
+        <td>{{ object.inventory_num }}</td>
         <td>{{ object.record_total }}</td>
         {% if not registry_object.valuable %}<td>{{ object.record_private if object.record_private }}</td>{% endif %}
         {% if not registry_object.valuable %}<td>{{ object.dates if object.dates }}</td>{% endif %}
