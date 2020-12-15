@@ -108,6 +108,16 @@ class RegistryForm(BaseForm):
         Optional()], widget=CustomCheckboxInput())
     submit = SubmitField("Сохранить", widget=CustomSubmitInput())
 
+class SummaryForm(BaseForm):
+    no_choice = [("", u"-- Весь период --")]
+
+    registry_id = SelectField("Реестр", validators=[
+        DataRequired()], widget=CustomSelect())
+    year = SelectField("Год", validators=[
+        Optional()], widget=CustomSelect(), filters=[lambda x: x or None], choices=no_choice + [(y, y) for y in reversed(range(1990, date.today().year + 1))])
+
+    submit = SubmitField("Подсчет", widget=CustomSubmitInput())
+
 
 class FilterForm(BaseForm):
     no_choice = [("", u"-- Все --")]

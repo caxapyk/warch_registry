@@ -11,4 +11,33 @@
 <p class="lead">
     Суммарный учет описей дел, документов, документов архива.
 </p>
+{% include 'summary/form.html' %}
+{% if total_ %}
+<div class="card mt-3">
+    <div class="card-body">
+        <h5 class="card-title">Суммарный учет</h5>
+        <p class="card-text"></p>
+    </div>
+    <ul class="list-group list-group-flush">
+        {% set year=request.args.get('year') %}
+        <li class="list-group-item">Итого на {% if year %}01.01.{{ year }} г.{% else %} весь период {% endif %}
+            {{ total_ }} описей</li>
+        <li class="list-group-item">
+            в т.ч. поступило {% if year %}в {{ year }} г.{% else %} в течение всего периода{% endif %} {{ in_ }}
+            описей<br />
+            <ul>
+                <li>в полном комплекте: {{ in_complect_ }} описей</li>
+                {% for name, count in in_by_type_ %}
+                {% if count %}
+                <li>{{ name }}: {{ count }} описей</li>
+                {% endif %}
+                {% endfor %}
+            </ul>
+        </li>
+        <li class="list-group-item">выбыло{% if year %} в {{ year }} г.{% else %} в течение всего периода{% endif %}
+            {{ out_ }} описей</li>
+    </ul>
+</div>
+
+{% endif %}
 {% endblock %}

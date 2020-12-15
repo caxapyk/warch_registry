@@ -37,7 +37,7 @@ def index(regid, page=1):
         if request.args.get('no_years'):
             filter.append(and_(InventoryModel.in_year == None, InventoryModel.out_year == None))
 
-    objects_list = InventoryModel.query.filter(*filter).paginate(page, 1, error_out=False)
+    objects_list = InventoryModel.query.filter(*filter).paginate(page, 20, error_out=False)
 
     return render_template('inventory/index.html', registry_object=registry_object, objects_list=objects_list, fform=fform, no_years_count=no_years_count)
 
