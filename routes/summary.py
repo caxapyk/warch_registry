@@ -25,8 +25,6 @@ def index():
         if request.args.get('year'):
             in_filter.append(InventoryModel.in_year ==
                          request.args.get('year'))
-        else:
-            in_filter.append(InventoryModel.in_year.isnot(None))
         in_ = InventoryModel.query.filter(*in_filter).count()
 
         in_complect_ = InventoryModel.query.filter(
@@ -37,15 +35,13 @@ def index():
         for inv_type in inventory_types_list:
             in_by_type_.append((inv_type.name, InventoryModel.query.filter(
                 *in_filter + [InventoryModel.inventory_type == inv_type.id]).count()))
-        in_by_type_.append((u"Без типа", InventoryModel.query.filter(
+        in_by_type_.append((u"Прочие описи (без типа)", InventoryModel.query.filter(
             *in_filter + [InventoryModel.inventory_type == None]).count()))
 
         out_filter = filter
         if request.args.get('year'):
             out_filter.append(InventoryModel.out_year ==
                           request.args.get('year'))
-        else:
-            out_filter.append(InventoryModel.out_year.isnot(None))
         out_ = InventoryModel.query.filter(*out_filter).count()
 
         return render_template('summary/index.html', form=form, total_=total_, in_=in_, in_complect_=in_complect_, in_by_type_=in_by_type_, out_=out_)

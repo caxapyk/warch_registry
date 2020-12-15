@@ -164,7 +164,7 @@ class InventoryForm(BaseForm):
     dates = StringField("Крайние даты", validators=[
         Optional(), Length(max=100)], widget=CustomTextInput())
     copies = IntegerField("Кол-во экз.", validators=[
-        DataRequired(), NumberRange(min=1, max=3)], widget=CustomNumberInput(min=1, max=3))
+        DataRequired(), NumberRange(min=1, max=9)], widget=CustomNumberInput(min=1, max=9))
     digital_copy = BooleanField("В т.ч. цифровая копия", validators=[
         Optional()], widget=CustomCheckboxInput())
     annotation = StringField("Примечания", validators=[

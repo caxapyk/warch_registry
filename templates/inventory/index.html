@@ -48,9 +48,13 @@
 
 {% if no_years_count %}
 <div class="alert alert-warning" role="alert">
-  Внимание! В реестре содержатся описи ({{ (no_years_count/2)|int }}), не имеющие одновременно дат приема и выбытия.
+  Внимание! В реестре содержатся описи, не имеющие одновременно дат приема и выбытия.
   Такие описи могут стать причиной неверных результатов в суммарном учете.
-  <a href="{{ url_for('inventory.index', regid=registry_object.id, no_years=True) }}">Исправить?</a>
+  <div class="d-block text-right">
+    <a href="{{ url_for('inventory.index', regid=registry_object.id, no_years=True) }}"
+      class="btn btn btn-outline-warning btn-sm">Показать</a>
+  </div>
+  
 </div>
 {% endif %}
 <strong>Результатов: {{ objects_list.total }}</strong>
