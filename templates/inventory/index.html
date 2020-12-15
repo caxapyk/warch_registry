@@ -32,7 +32,6 @@
   </ol>
 </nav>
 
-{% if objects_list.items %}
 <div class="row">
   <div class="col-lg-6">
     {% include 'inventory/filter.html' %}
@@ -46,14 +45,13 @@
   </div>
 </div>
 
+{% if objects_list.items %}
 {% if no_years_count %}
 <div class="alert alert-warning" role="alert">
   Внимание! В реестре содержатся описи, не имеющие одновременно дат приема и выбытия.
   Такие описи могут стать причиной неверных результатов в суммарном учете.
-  <div class="d-block text-right">
     <a href="{{ url_for('inventory.index', regid=registry_object.id, no_years=True) }}"
       class="btn btn btn-outline-warning btn-sm">Показать</a>
-  </div>
   
 </div>
 {% endif %}
