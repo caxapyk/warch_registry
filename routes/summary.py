@@ -35,7 +35,7 @@ def index():
         for inv_type in inventory_types_list:
             in_by_type_.append((inv_type.name, InventoryModel.query.filter(
                 *in_filter + [InventoryModel.inventory_type == inv_type.id]).count()))
-        in_by_type_.append((u"Прочие описи (без типа)", InventoryModel.query.filter(
+        in_by_type_.append((u"Тип не указан", InventoryModel.query.filter(
             *in_filter + [InventoryModel.inventory_type == None]).count()))
 
         out_filter = filter

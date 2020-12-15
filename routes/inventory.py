@@ -24,7 +24,7 @@ def index(regid, page=1):
                             request.args.get('fund_num'))
 
         if request.args.get('inventory_num'):
-            filter.append(InventoryModel.fund_num.like('%%%s%' % request.args.get('inventory_num')))
+            filter.append(InventoryModel.inventory_num.like("%{}%".format(request.args.get('inventory_num'))))
 
         if request.args.get('year'):
             filter.append(InventoryModel.in_year ==
